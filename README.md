@@ -1,7 +1,7 @@
 # dotenv-mode
 An Emacs mode for .env files that includes the following features:
-- Support for .env files syntax as supported by multiple libraries (such as [bkeepers/dotenv](https://github.com/bkeepers/dotenv/blob/master/lib/dotenv/parser.rb) or [joho/godotenv](https://github.com/joho/godotenv)).
-- Support (that can be disabled) for different extensions as described [here](https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use).
+- **(TO BE IMPLEMENTED)** Support for .env files syntax as supported by multiple libraries (such as [bkeepers/dotenv](https://github.com/bkeepers/dotenv/blob/master/lib/dotenv/parser.rb) or [joho/godotenv](https://github.com/joho/godotenv)).
+- **(TO BE IMPLEMENTED)** Support (that can be disabled) for different extensions as described [here](https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use).
 
 Future plans:
 - Add support for all syntax supported by [bkeepers/dotenv](https://github.com/bkeepers/dotenv/blob/master/lib/dotenv/parser.rb).
