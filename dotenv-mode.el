@@ -47,12 +47,9 @@
     table))
 
 (defconst dotenv-mode-highlights
-  '(("#.*" . font-lock-comment-face)
-    ("export +" . font-lock-keyword-face)
-    ;; (":\\|=" . font-lock-negation-char-face)
+  '(("export +" . font-lock-keyword-face)
     ("[[:alpha:]_]+[[:alpha:][:digit:]_]*[:=]+" . font-lock-variable-name-face)
-    ("\$[[:alpha:]]+[[:alpha:][:digit:]_]*" . font-lock-constant-face)
-    ))
+    ("\$[[:alpha:]]+[[:alpha:][:digit:]_]*" . font-lock-constant-face)))
 
 ;;;###autoload
 (define-derived-mode dotenv-mode prog-mode ".env"
