@@ -32,7 +32,7 @@
 ;;; Code:
 
 (defgroup dotenv ()
-  "Customize group for dotenv-mode.el"
+  "Major mode for editing .env files."
   :group 'languages
   :prefix "dotenv-")
 
