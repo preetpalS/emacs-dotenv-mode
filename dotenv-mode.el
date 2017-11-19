@@ -48,7 +48,7 @@
 
 (defconst dotenv-mode-highlights
   '(("export +" . font-lock-keyword-face)
-    ("[[:alpha:]_]+[[:alpha:][:digit:]_]*[:=]+" . font-lock-variable-name-face)
+    ("[[:alpha:]_]+[[:alpha:][:digit:]_]*[=]+\\|^[[:alpha:]_]+[[:alpha:][:digit:]_]*[:=]+" . font-lock-variable-name-face)
     ("\$[[:alpha:]]+[[:alpha:][:digit:]_]*" . font-lock-constant-face)))
 
 ;;;###autoload
