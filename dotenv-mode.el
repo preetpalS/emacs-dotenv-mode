@@ -31,11 +31,6 @@
   :group 'lisp
   :prefix "dotenv-mode-")
 
-(defcustom dotenv-mode-disable-wildcard-env-filetype-support nil
-  "Set to a truthy value to disable `dotenv-mode' for all files not ending with `\".env\"'."
-  :type 'boolean
-  :group 'dotenv-mode)
-
 (defconst dotenv-mode-highlights
   '(("#.*" . font-lock-comment-face)
     ("export +" . font-lock-keyword-face)
@@ -52,10 +47,7 @@
   )
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist
-             (if dotenv-mode-disable-wildcard-env-filetype-support
-                 '("\\.env\\'" . dotenv-mode)
-               '("\\.env.*\\'" . dotenv-mode)))
+(add-to-list 'auto-mode-alist '("\\.env\\'" . dotenv-mode))
 
 (provide 'dotenv-mode)
 
