@@ -31,10 +31,10 @@
 
 ;;; Code:
 
-(defgroup dotenv-mode ()
+(defgroup dotenv ()
   "Customize group for dotenv-mode.el"
-  :group 'lisp
-  :prefix "dotenv-mode-")
+  :group 'languages
+  :prefix "dotenv-")
 
 (defconst dotenv-mode-highlights
   '(("#.*" . font-lock-comment-face)
