@@ -36,6 +36,16 @@
   :group 'languages
   :prefix "dotenv-")
 
+(defvar dotenv-mode-syntax-table
+  (let ((table (make-syntax-table)))
+    (modify-syntax-entry ?' "\"" table)  ; ?' is a string delimiter
+    (modify-syntax-entry ?\" "\"" table) ; ?\" is a string delimiter
+    (modify-syntax-entry ?# "<" table)   ; ?# starts comments
+    (modify-syntax-entry ?\n ">" table)  ; ?\n ends comments
+    (modify-syntax-entry ?_ "_" table)   ; \_ can be used in variable and command names
+    (modify-syntax-entry ?\\ "\\" table) ; ?\\ is an escape sequence character
+    table))
+
 (defconst dotenv-mode-highlights
   '(("#.*" . font-lock-comment-face)
     ("export +" . font-lock-keyword-face)
@@ -48,8 +58,8 @@
 (define-derived-mode dotenv-mode prog-mode ".env"
   "Major mode for `.env' files."
   :abbrev-table nil
-  (setq-local font-lock-defaults '(dotenv-mode-highlights))
-  )
+  :syntax-table dotenv-mode-syntax-table
+  (setq-local font-lock-defaults '(dotenv-mode-highlights)))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.env\\'" . dotenv-mode))
