@@ -1,4 +1,4 @@
-;;; dotenv-mode.el --- Major mode for .lock files -*- lexical-binding: t; -*-
+;;; dotenv-mode.el --- Major mode for .env files -*- lexical-binding: t; -*-
 
 ;; Author: Preetpal S. Sohal
 ;; URL: https://github.com/preetpalS/emacs-dotenv-mode
