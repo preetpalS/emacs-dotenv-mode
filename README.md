@@ -1,3 +1,4 @@
+[![MELPA](https://melpa.org/packages/dotenv-mode-badge.svg)](https://melpa.org/#/dotenv-mode)
 # dotenv-mode
 An Emacs mode for .env files that includes the following features:
 - Support for common .env file syntax as described in [examples/](https://github.com/preetpalS/emacs-dotenv-mode/tree/master/examples).
