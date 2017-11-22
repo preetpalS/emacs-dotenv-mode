@@ -47,17 +47,18 @@
     (modify-syntax-entry ?$ "'" table)    ; ?$ is an expression prefix; Used to match variables (along with interpolated) in double quotes
     table))
 
-(defconst dotenv-mode-highlights
-  '(("export[[:space:]]+" . font-lock-keyword-face)
-    ("[[:alpha:]_]+[[:alpha:][:digit:]_]*[=]+\\|^[[:alpha:]_]+[[:alpha:][:digit:]_]*[:=]+" . font-lock-variable-name-face)
-    ("\$[[:alpha:]]+[[:alpha:][:digit:]_]*" . font-lock-constant-face)))
+(defconst dotenv-mode-keywords
+  '(("\\(export\\)[[:space:]]+" . 1)
+    ("\\([[:alpha:]_]+[[:alnum:]_]*\\)[=]" 1 font-lock-variable-name-face)
+    ("^\\([[:alpha:]_]+[[:alnum:]_]*\\)[:=]" 1 font-lock-variable-name-face)
+    ("\$[[:alpha:]]+[[:alnum:]_]*" . font-lock-variable-name-face)))
 
 ;;;###autoload
 (define-derived-mode dotenv-mode prog-mode ".env"
   "Major mode for `.env' files."
   :abbrev-table nil
   :syntax-table dotenv-mode-syntax-table
-  (setq-local font-lock-defaults '(dotenv-mode-highlights)))
+  (font-lock-add-keywords nil dotenv-mode-keywords))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.env\\'" . dotenv-mode))
