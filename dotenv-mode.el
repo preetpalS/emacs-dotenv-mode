@@ -38,12 +38,13 @@
 
 (defvar dotenv-mode-syntax-table
   (let ((table (make-syntax-table)))
-    (modify-syntax-entry ?' "\"" table)  ; ?' is a string delimiter
-    (modify-syntax-entry ?\" "\"" table) ; ?\" is a string delimiter
-    (modify-syntax-entry ?# "<" table)   ; ?# starts comments
-    (modify-syntax-entry ?\n ">" table)  ; ?\n ends comments
-    (modify-syntax-entry ?_ "_" table)   ; ?_ can be used in variable and command names
-    (modify-syntax-entry ?\\ "\\" table) ; ?\\ is an escape sequence character
+    (modify-syntax-entry ?' "\"'" table)  ; ?' is a string delimiter
+    (modify-syntax-entry ?\" "\"" table)  ; ?\" is a string delimiter
+    (modify-syntax-entry ?# "<" table)    ; ?# starts comments
+    (modify-syntax-entry ?\n ">" table)   ; ?\n ends comments
+    (modify-syntax-entry ?_ "_" table)    ; ?_ can be used in variable and command names
+    (modify-syntax-entry ?\\ "\\" table)  ; ?\\ is an escape sequence character
+    (modify-syntax-entry ?$ "'" table)    ; ?$ is an expression prefix; Used to match variables (along with interpolated) in double quotes
     table))
 
 (defconst dotenv-mode-highlights
