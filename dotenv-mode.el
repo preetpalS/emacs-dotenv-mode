@@ -51,7 +51,9 @@
   '(("\\(export\\)[[:space:]]+" . 1)
     ("\\([[:alpha:]_]+[[:alnum:]_]*\\)[=]" 1 font-lock-variable-name-face)
     ("^\\([[:alpha:]_]+[[:alnum:]_]*\\)[:=]" 1 font-lock-variable-name-face)
-    ("\$[[:alpha:]]+[[:alnum:]_]*" . font-lock-variable-name-face)))
+    ("\$[[:alpha:]]+[[:alnum:]_]*" . font-lock-variable-name-face)
+    ("\${[[:alpha:]]+[[:alnum:]_]*}" . font-lock-variable-name-face)
+    ("\$([[:alpha:]]+[[:alnum:]_]*)" . font-lock-variable-name-face)))
 
 ;;;###autoload
 (define-derived-mode dotenv-mode prog-mode ".env"
