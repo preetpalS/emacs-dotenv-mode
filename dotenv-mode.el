@@ -47,8 +47,31 @@
     (modify-syntax-entry ?$ "'" table)    ; ?$ is an expression prefix; Used to match variables (along with interpolated) in double quotes
     table))
 
+;; Adapted from code generously donated by Fuco1 (https://github.com/Fuco1; see: https://fuco1.github.io/2017-06-11-Font-locking-with-custom-matchers.html)
+(defun dotenv-mode--match-variables-in-double-quotes (limit)
+  "Match variables in double-quotes in `dotenv-mode'."
+  (with-syntax-table dotenv-mode-syntax-table
+    (catch 'done
+      (while (re-search-forward
+              ;; `rx' is cool, mkay.
+              (rx (or line-start
+                      (not (any "\\")))
+                  (group "$")
+                  (group
+                   (or (and "{" (+? nonl) "}")
+                       (and "(" (+? nonl) ")") ;; Added to support for interpolated command substitution syntax (like: "$(shell command)")
+                       (and (+ (any alnum "_")))
+                       (and (any "*" "@" "#" "?" "-" "$" "!" "0" "_")))))
+              limit t)
+        (-when-let (string-syntax (nth 3 (syntax-ppss)))
+          (when (= string-syntax 34)
+            (throw 'done (point))))))))
+
 (defconst dotenv-mode-keywords
   '(("\\(export\\)[[:space:]]+" . 1)
+    ;; Adapted from code generously donated by Fuco1 (https://github.com/Fuco1; see: https://fuco1.github.io/2017-06-11-Font-locking-with-custom-matchers.html)
+    (dotenv-mode--match-variables-in-double-quotes (1 'default t)
+                                                   (2 font-lock-variable-name-face t))
     ("\\([[:alpha:]_]+[[:alnum:]_]*\\)[=]" 1 font-lock-variable-name-face)
     ("^\\([[:alpha:]_]+[[:alnum:]_]*\\)[:=]" 1 font-lock-variable-name-face)
     ("\$[[:alpha:]]+[[:alnum:]_]*" . font-lock-variable-name-face)
