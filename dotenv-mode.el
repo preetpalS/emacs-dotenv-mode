@@ -44,7 +44,7 @@
     (modify-syntax-entry ?\n ">" table)   ; ?\n ends comments
     (modify-syntax-entry ?_ "_" table)    ; ?_ can be used in variable and command names
     (modify-syntax-entry ?\\ "\\" table)  ; ?\\ is an escape sequence character
-    (modify-syntax-entry ?$ "'" table)    ; ?$ is an expression prefix; Used to match variables (along with interpolated) in double quotes
+    (modify-syntax-entry ?$ "'" table)    ; ?$ is an expression prefix; Used in highlighting $VARIABLES, ${SUBSTITUTED_VARIABLES}, and $(substituted commands) embedded in double-quoted strings
     table))
 
 ;; Adapted from code generously donated by Fuco1 (https://github.com/Fuco1; see: https://fuco1.github.io/2017-06-11-Font-locking-with-custom-matchers.html)
