@@ -2,7 +2,7 @@
 
 ;; Author: Preetpal S. Sohal
 ;; URL: https://github.com/preetpalS/emacs-dotenv-mode
-;; Version: 0.1.0
+;; Version: 0.2.0
 ;; Package-Requires: ((emacs "24.3"))
 ;; License: GNU General Public License Version 3
 
@@ -38,25 +38,52 @@
 
 (defvar dotenv-mode-syntax-table
   (let ((table (make-syntax-table)))
-    (modify-syntax-entry ?' "\"" table)  ; ?' is a string delimiter
-    (modify-syntax-entry ?\" "\"" table) ; ?\" is a string delimiter
-    (modify-syntax-entry ?# "<" table)   ; ?# starts comments
-    (modify-syntax-entry ?\n ">" table)  ; ?\n ends comments
-    (modify-syntax-entry ?_ "_" table)   ; ?_ can be used in variable and command names
-    (modify-syntax-entry ?\\ "\\" table) ; ?\\ is an escape sequence character
+    (modify-syntax-entry ?' "\"'" table)  ; ?' is a string delimiter
+    (modify-syntax-entry ?\" "\"" table)  ; ?\" is a string delimiter
+    (modify-syntax-entry ?# "<" table)    ; ?# starts comments
+    (modify-syntax-entry ?\n ">" table)   ; ?\n ends comments
+    (modify-syntax-entry ?_ "_" table)    ; ?_ can be used in variable and command names
+    (modify-syntax-entry ?\\ "\\" table)  ; ?\\ is an escape sequence character
+    (modify-syntax-entry ?$ "'" table)    ; ?$ is an expression prefix; Used in highlighting $VARIABLES, ${SUBSTITUTED_VARIABLES}, and $(substituted commands) embedded in double-quoted strings
     table))
 
-(defconst dotenv-mode-highlights
-  '(("export[[:space:]]+" . font-lock-keyword-face)
-    ("[[:alpha:]_]+[[:alpha:][:digit:]_]*[=]+\\|^[[:alpha:]_]+[[:alpha:][:digit:]_]*[:=]+" . font-lock-variable-name-face)
-    ("\$[[:alpha:]]+[[:alpha:][:digit:]_]*" . font-lock-constant-face)))
+;; Adapted from code generously donated by Fuco1 (https://github.com/Fuco1; see: https://fuco1.github.io/2017-06-11-Font-locking-with-custom-matchers.html)
+(defun dotenv-mode--match-variables-in-double-quotes (limit)
+  "Match variables in double-quotes in `dotenv-mode'."
+  (with-syntax-table dotenv-mode-syntax-table
+    (catch 'done
+      (while (re-search-forward
+              ;; `rx' is cool, mkay.
+              (rx (or line-start
+                      (not (any "\\")))
+                  (group "$")
+                  (group
+                   (or (and "{" (+? nonl) "}")
+                       (and "(" (+? nonl) ")") ;; Added to support for interpolated command substitution syntax (like: "$(shell command)")
+                       (and (+ (any alnum "_")))
+                       (and (any "*" "@" "#" "?" "-" "$" "!" "0" "_")))))
+              limit t)
+        (-when-let (string-syntax (nth 3 (syntax-ppss)))
+          (when (= string-syntax 34)
+            (throw 'done (point))))))))
+
+(defvar dotenv-mode-keywords
+  '(("\\(export\\)[[:space:]]+" . 1)
+    ;; Adapted from code generously donated by Fuco1 (https://github.com/Fuco1; see: https://fuco1.github.io/2017-06-11-Font-locking-with-custom-matchers.html)
+    (dotenv-mode--match-variables-in-double-quotes (1 'default t)
+                                                   (2 font-lock-variable-name-face t))
+    ("\\([[:alpha:]_]+[[:alnum:]_]*\\)[=]" 1 font-lock-variable-name-face)
+    ("^\\([[:alpha:]_]+[[:alnum:]_]*\\)[:=]" 1 font-lock-variable-name-face)
+    ("\$[[:alpha:]]+[[:alnum:]_]*" . font-lock-variable-name-face)
+    ("\${[[:alpha:]]+[[:alnum:]_]*}" . font-lock-variable-name-face)
+    ("\$([[:alpha:]]+[[:alnum:]_]*)" . font-lock-variable-name-face)))
 
 ;;;###autoload
 (define-derived-mode dotenv-mode prog-mode ".env"
   "Major mode for `.env' files."
   :abbrev-table nil
   :syntax-table dotenv-mode-syntax-table
-  (setq-local font-lock-defaults '(dotenv-mode-highlights)))
+  (setq-local font-lock-defaults '((dotenv-mode-keywords))))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.env\\'" . dotenv-mode))
