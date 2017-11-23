@@ -67,7 +67,7 @@
           (when (= string-syntax 34)
             (throw 'done (point))))))))
 
-(defconst dotenv-mode-keywords
+(defvar dotenv-mode-keywords
   '(("\\(export\\)[[:space:]]+" . 1)
     ;; Adapted from code generously donated by Fuco1 (https://github.com/Fuco1; see: https://fuco1.github.io/2017-06-11-Font-locking-with-custom-matchers.html)
     (dotenv-mode--match-variables-in-double-quotes (1 'default t)
@@ -83,7 +83,7 @@
   "Major mode for `.env' files."
   :abbrev-table nil
   :syntax-table dotenv-mode-syntax-table
-  (font-lock-add-keywords nil dotenv-mode-keywords))
+  (setq-local font-lock-defaults '((dotenv-mode-keywords))))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.env\\'" . dotenv-mode))
