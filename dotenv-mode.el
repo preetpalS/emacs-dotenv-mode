@@ -87,6 +87,7 @@
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.env\\'" . dotenv-mode))
+(add-to-list 'auto-mode-alist '("\\.env\\.example\\'" . dotenv-mode))
 
 (provide 'dotenv-mode)
 
