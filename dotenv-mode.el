@@ -2,7 +2,7 @@
 
 ;; Author: Preetpal S. Sohal
 ;; URL: https://github.com/preetpalS/emacs-dotenv-mode
-;; Version: 0.2.3
+;; Version: 0.2.4
 ;; Package-Requires: ((emacs "24.3"))
 ;; License: GNU General Public License Version 3
 
@@ -86,10 +86,11 @@
   (setq-local font-lock-defaults '((dotenv-mode-keywords))))
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.env\\'" . dotenv-mode))
-
-;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.env\\.example\\'" . dotenv-mode))
+(mapc (lambda (s) (add-to-list 'auto-mode-alist `(,s . dotenv-mode)))
+      '(
+        "\\.env\\'"
+        "\\.env\\.example\\'"
+        ))
 
 (provide 'dotenv-mode)
 
